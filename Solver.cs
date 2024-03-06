@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using ilunnie.Search;
 
 namespace MazeAI;
 
@@ -46,10 +47,8 @@ public class Solver
         }
     }
 
-    private static bool DFS(Space space, Space goal)
-    {
-        throw new NotImplementedException();
-    }
+    private static bool DFS(Space start, Space goal)
+        => Search.DFSearch(start, goal);
 
     private static bool BFS(Space start, Space goal)
     {
