@@ -54,9 +54,7 @@ public class Solver
         => Search.BFSearch(start, goal);
 
     private static bool Dijkstra(Space start, Space goal)
-    {
-        throw new NotImplementedException();
-    }
+        => Search.Dijkstra(start, goal);
 
     private static bool AStar(Space start, Space goal)
     {
