@@ -8,43 +8,62 @@ public static partial class Search
 {
     public static bool Dijkstra(Space start, Space goal)
     {
-        Dictionary<Space, Space?> parents = new();
-        parents.Add(start, null);
+        var queue = new PriorityQueue<Space, float>();
+        var dist = new Dictionary<Space, float>();
+        var prev = new Dictionary<Space, Space>();
 
-        Queue<Space> queue = new();
-        queue.Enqueue(start);
+        queue.Enqueue(start, 0);
+        dist[start] = .0f;
 
         while (queue.Count > 0)
         {
             var currNode = queue.Dequeue();
-            
+
+            if (currNode.Visited)
+                continue;
             currNode.Visited = true;
-                
+
             if (currNode == goal)
             {
-                Space? space = currNode;
-                do
-                {
-                    space.IsSolution = true;
-                    space = parents[space];
-                }
-                while(space != null);
-                return true;
+                currNode.IsSolution = true;
+                break;
             }
 
-            foreach (var space in currNode.Neighbours())
-                if (space is not null && !space.Visited)
+            Space?[] neighbours = currNode.Neighbours();
+
+            foreach (var space in neighbours)
+            {
+                if (space is not null)
                 {
-                    queue.Enqueue(space);
-                    if (!parents.ContainsKey(space))
-                        parents.Add(space, currNode);
-                    else
-                        if (parents.CountBy(currNode) < parents.CountBy(parents[space]!))
-                            parents[space] = currNode;
+                    var newWeight = dist[currNode] + 1;
+
+                    if (!dist.ContainsKey(space))
+                    {
+                        dist[space] = float.PositiveInfinity;
+                        prev[space] = null!;
+                    }
+
+                    if (newWeight < dist[space])
+                    {
+                        dist[space] = newWeight;
+                        prev[space] = currNode;
+                        queue.Enqueue(space, newWeight);
+                    }
                 }
+            }
         }
 
-        return false;
+        var attempt = goal;
+        while (attempt != start)
+        {
+            if (!prev.ContainsKey(attempt))
+                return false;
+
+            attempt = prev[attempt];
+            attempt.IsSolution = true;
+        }
+
+        return true;
     }
 
     private static int CountBy(this Dictionary<Space, Space?> parents, Space key)
