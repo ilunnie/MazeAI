@@ -51,9 +51,7 @@ public class Solver
         => Search.DFSearch(start, goal);
 
     private static bool BFS(Space start, Space goal)
-    {
-        throw new NotImplementedException();
-    }
+        => Search.BFSearch(start, goal);
 
     private static bool Dijkstra(Space start, Space goal)
     {
