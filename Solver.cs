@@ -57,7 +57,5 @@ public class Solver
         => Search.Dijkstra(start, goal);
 
     private static bool AStar(Space start, Space goal)
-    {
-        throw new NotImplementedException();
-    }
+        => Search.AStar(start, goal);
 }
